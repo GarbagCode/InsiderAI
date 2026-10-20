@@ -6,11 +6,14 @@ cursor = conn.cursor()
 cursor.execute("SELECT COUNT(*) FROM stock_prices")
 total_rows = cursor.fetchone()[0]
 
+cursor.execute("SELECT * FROM stock_prices LIMIT 5")
+five_rows = cursor.fetchall()
+
 cursor.execute("SELECT COUNT(DISTINCT Ticker) FROM stock_prices")
 unique_tickers = cursor.fetchone()[0]
 
-cursor.execute("SELECT Ticker, COUNT(*) as days FROM stock_prices GROUP BY Ticker ORDER BY days DESC LIMIT 10")
-print("Top 10 tickers by data points:")
+cursor.execute("SELECT Ticker, COUNT(*) as days FROM stock_prices GROUP BY Ticker ORDER BY days DESC LIMIT 5")
+print("Top 5 tickers by data points:")
 for row in cursor.fetchall():
     print(f"  {row[0]}: {row[1]} days")
 
@@ -18,3 +21,4 @@ conn.close()
 
 print(f"\nTotal price records: {total_rows:,}")
 print(f"Unique tickers with data: {unique_tickers}")
+print(five_rows)
